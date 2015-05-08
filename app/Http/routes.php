@@ -13,9 +13,16 @@
 
 Route::get('/', 'WelcomeController@index');
 
-Route::get('home', 'HomeController@index');
+Route::get('action/{id}', 'WelcomeController@todoDetails');
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
+Route::get('add', 'WelcomeController@add');
+
+Route::get('delete', 'WelcomeController@delete');
+
+Route::post('addTodo', 'WelcomeController@addTodo');
+
+Route::post('deleteTodo', 'WelcomeController@deleteTodo');
+
+//Route::get('home', 'HomeController@index');
+
+
