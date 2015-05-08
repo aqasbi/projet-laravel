@@ -1,36 +1,28 @@
-<?php namespace App\Http\Controllers;
+<?php
 
-class WelcomeController extends Controller {
+/*
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the controller to call when that URI is requested.
+|
+*/
 
-	/*
-	|--------------------------------------------------------------------------
-	| Welcome Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller renders the "marketing page" for the application and
-	| is configured to only allow guests. Like most of the other sample
-	| controllers, you are free to modify or remove it as you desire.
-	|
-	*/
+Route::get('/', 'WelcomeController@index');
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		$this->middleware('guest');
-	}
+Route::get('action/{id}', 'WelcomeController@todoDetails');
 
-	/**
-	 * Show the application welcome screen to the user.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		return view('welcome');
-	}
+Route::get('add', 'WelcomeController@add');
 
-}
+Route::get('delete', 'WelcomeController@delete');
+
+Route::post('addTodo', 'WelcomeController@addTodo');
+
+Route::post('deleteTodo', 'WelcomeController@deleteTodo');
+
+//Route::get('home', 'HomeController@index');
+
+
