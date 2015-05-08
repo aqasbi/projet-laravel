@@ -1,28 +1,86 @@
-<?php
+<?php namespace App\Http\Controllers;
+use DB;
+use Illuminate\Http\Request;       //from user manual
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
 
-Route::get('/', 'WelcomeController@index');
+class WelcomeController extends Controller {
 
-Route::get('action/{id}', 'WelcomeController@todoDetails');
+	/*
+	|--------------------------------------------------------------------------
+	| Welcome Controller
+	|--------------------------------------------------------------------------
+	|
+	| This controller renders the "marketing page" for the application and
+	| is configured to only allow guests. Like most of the other sample
+	| controllers, you are free to modify or remove it as you desire.
+	|
+	*/
 
-Route::get('add', 'WelcomeController@add');
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('guest');
+	}
 
-Route::get('delete', 'WelcomeController@delete');
+	/**
+	 * Show the application welcome screen to the user.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		$results = DB::table('todolist')->get();
+		//return $results;
+		return view('todo', compact('results'));
+	}
+	
+	public function todoDetails($id)
+	{
+		$result = DB::table('todolist')->find($id);
 
-Route::post('addTodo', 'WelcomeController@addTodo');
+		return view('details', compact('result'));
+	}
 
-Route::post('deleteTodo', 'WelcomeController@deleteTodo');
+	public function add()
+	{
 
-//Route::get('home', 'HomeController@index');
+		return view('add');
+	}
 
+	public function addTodo(Request $request)
+	{
+		
+		DB::table('todolist')->insert(
+		    array('title' => $request->input('title'), 'details' => $request->input('details'), 'date' => $request->input('date'), 'time' => $request->input('time'))
+		);
+
+		$results = DB::table('todolist')->get();
+		//return $results;
+		return view('todo', compact('results'));
+	}
+
+	public function delete()
+	{
+		$results = DB::table('todolist')->get();
+		
+		return view('delete', compact('results'));
+	}
+
+	public function deleteTodo(Request $request)
+	{
+		
+		DB::table('todolist')->where('id', '=', $request->input('id'))->delete();
+
+		$results = DB::table('todolist')->get();
+		//return $results;
+		return view('todo', compact('results'));
+	}
+	
+
+
+}
 
